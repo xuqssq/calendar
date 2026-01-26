@@ -9,8 +9,8 @@ const OUTPUT_DIR = path.join(__dirname, 'output');
 const ICS_OUTPUT = path.join(__dirname, 'calendar.ics');
 
 // 生成唯一ID
-function generateUID(date, type) {
-  return `${date}-${type}@calendar`;
+function generateUID(date, type, index = 0) {
+  return `${date}-${type}-${index}@calendar`;
 }
 
 // 格式化日期为ICS格式 (YYYYMMDD)
@@ -25,10 +25,10 @@ function escapeICS(text) {
 }
 
 // 生成单个事件
-function generateEvent(date, summary, description, category) {
+function generateEvent(date, summary, description, category, index = 0) {
   const now = new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
   return `BEGIN:VEVENT
-UID:${generateUID(date, category)}
+UID:${generateUID(date, category, index)}
 DTSTAMP:${now}
 DTSTART;VALUE=DATE:${date}
 DTEND;VALUE=DATE:${date}
@@ -59,14 +59,18 @@ function generateICS() {
     for (const day of data) {
       const dateStr = formatDate(year, month, day.day);
 
-      // 添加节日事件
+      // 添加节日事件（每个节日单独一个事件）
       if (day.festival) {
-        events.push(generateEvent(
-          dateStr,
-          day.festival,
-          `农历: ${day.lunar}\n干支: ${day.ganzhi}`,
-          '节日'
-        ));
+        const festivals = day.festival.split(/\s+/).filter(Boolean);
+        festivals.forEach((festival, index) => {
+          events.push(generateEvent(
+            dateStr,
+            festival,
+            `农历: ${day.lunar}\n干支: ${day.ganzhi}`,
+            '节日',
+            index
+          ));
+        });
       }
 
       // 添加休息日/工作日标记
