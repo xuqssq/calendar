@@ -3,7 +3,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import { fetchCalendarHtml, generateMonths } from './lib/api.js';
 import { parseCalendarHtml } from './lib/parser.js';
-import { retry, parallel } from './lib/utils.js';
+import { retry, parallel, isValidJsonFile } from './lib/utils.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -18,6 +18,14 @@ const CONFIG = {
  * 获取并保存单个月份的数据（带重试）
  */
 const fetchAndSaveMonth = async (month, outputDir) => {
+    const outputPath = path.join(outputDir, `${month}.json`);
+
+    // 检查文件是否已存在且内容有效（长度大于5），存在则跳过
+    const { valid, data } = await isValidJsonFile(outputPath, 5);
+    if (valid) {
+        return { month, count: data.length, skipped: true };
+    }
+
     return retry(async () => {
         const html = await fetchCalendarHtml(month);
         const calendarData = parseCalendarHtml(html);
@@ -27,7 +35,6 @@ const fetchAndSaveMonth = async (month, outputDir) => {
             throw new Error('解析数据为空，需要重试');
         }
 
-        const outputPath = path.join(outputDir, `${month}.json`);
         await fs.writeFile(outputPath, JSON.stringify(calendarData, null, 2), 'utf-8');
 
         return { month, count: calendarData.length };
@@ -52,7 +59,11 @@ const fetchYearRange = async (startYear, endYear) => {
             const result = await fetchAndSaveMonth(month, outputDir);
             completed++;
             const progress = ((completed / months.length) * 100).toFixed(1);
-            console.log(`[${progress}%] ✓ ${month} (${result.count} 天)`);
+            if (result.skipped) {
+                console.log(`[${progress}%] ⊘ ${month} (已存在，跳过)`);
+            } else {
+                console.log(`[${progress}%] ✓ ${month} (${result.count} 天)`);
+            }
             return result;
         },
         CONFIG.concurrency
@@ -60,8 +71,9 @@ const fetchYearRange = async (startYear, endYear) => {
 
     const successful = results.filter(r => r.success);
     const failed = results.filter(r => !r.success);
+    const skipped = successful.filter(r => r.result?.skipped).length;
 
-    console.log(`\n完成！成功: ${successful.length}/${months.length} 个月`);
+    console.log(`\n完成！成功: ${successful.length}/${months.length} 个月${skipped > 0 ? `（跳过: ${skipped}）` : ''}`);
 
     if (failed.length > 0) {
         console.log(`\n失败的月份 (${failed.length}):`);
