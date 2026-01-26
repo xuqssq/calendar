@@ -44,6 +44,11 @@ const MAJOR_HOLIDAYS = [
   '元旦', '春节', '除夕', '清明', '劳动节', '端午', '中秋', '国庆'
 ];
 
+// 节日名称映射（统一显示名称）
+const HOLIDAY_NAME_MAP = {
+  '除夕': '春节'  // 除夕统一显示为春节
+};
+
 // 提取主要节日名（只保留法定假日相关名称）
 function extractMajorFestival(festivalStr) {
   if (!festivalStr) return null;
@@ -51,7 +56,8 @@ function extractMajorFestival(festivalStr) {
   // 检查是否包含主要节日
   for (const holiday of MAJOR_HOLIDAYS) {
     if (festivalStr.includes(holiday)) {
-      return holiday;
+      // 应用名称映射
+      return HOLIDAY_NAME_MAP[holiday] || holiday;
     }
   }
   
