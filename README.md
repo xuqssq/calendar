@@ -22,7 +22,8 @@
 - **高性能** - 并发请求，可配置并发数量
 - **稳定可靠** - 自动重试失败请求，保证数据完整性
 - **增量更新** - 智能跳过已存在数据，避免重复采集
-- **标准格式** - 导出 ICS 格式，兼容主流日历应用
+- **标准格式** - 导出 RFC 5545 标准 ICS 格式，兼容主流日历应用
+- **云端上传** - 支持上传至 Cloudflare R2，实现日历订阅
 
 ## 快速开始
 
@@ -57,8 +58,22 @@ yarn generate-ics
 ```
 
 生成的 `calendar.ics` 文件包含：
-- 节日事件（含农历、干支信息）
-- 调休标记（休息日/调休上班）
+- 🎊 节日事件（带节日图标）
+- 🎉 休息日标记
+- 💼 调休上班标记
+- 农历、干支、宜忌信息
+
+### 上传至云端
+
+配置环境变量后，可将日历文件上传至 Cloudflare R2：
+
+```bash
+# 复制环境变量模板
+cp .env.example .env
+
+# 编辑 .env 填入 R2 配置
+yarn upload
+```
 
 ## 订阅日历
 
@@ -119,21 +134,34 @@ https://cdn.xuqssq.com/calendar.ics
 
 ```
 calendar/
-├── main.js              # 主程序入口
+├── main.js              # 数据采集主程序
 ├── generateIcs.js       # ICS 日历生成脚本
+├── uploadToCF.js        # 上传至 Cloudflare R2
 ├── package.json         # 项目配置
+├── .env.example         # 环境变量模板
 ├── lib/
-│   ├── api.js           # HTTP 请求封装
-│   ├── parser.js        # HTML 解析器
-│   └── utils.js         # 工具函数
+│   └── uploadToR2.js    # R2 上传工具库
 ├── output/              # JSON 数据输出目录
 │   ├── 2026-01.json
-│   ├── 2026-02.json
 │   └── ...
 └── calendar.ics         # 生成的 ICS 日历文件
 ```
 
+## 环境变量
+
+上传功能需要配置以下环境变量（在 `.env` 文件中）：
+
+| 变量 | 必填 | 说明 |
+|:-----|:-----|:-----|
+| `CF_ACCESS_KEY_ID` | ✓ | Cloudflare R2 Access Key ID |
+| `CF_ACCESS_SECRET` | ✓ | Cloudflare R2 Secret Access Key |
+| `CF_ENDPOINT` | ✓ | R2 Endpoint URL |
+| `CF_BUCKET` | ✓ | 存储桶名称 |
+| `CF_PUBLIC_ACCESS_URL` | | 公开访问 URL 前缀 |
+
 ## 配置说明
+
+### 数据采集配置
 
 在 `main.js` 中可调整以下配置：
 
@@ -146,10 +174,31 @@ const CONFIG = {
 ```
 
 | 配置项 | 默认值 | 说明 |
-|:-------|:-------|:-----|
+|:-------|:-------|:--------|
 | `concurrency` | 10 | 同时发起的请求数量，建议不超过 20 |
 | `retries` | 3 | 请求失败后的重试次数 |
 | `retryDelay` | 1000 | 每次重试之间的等待时间（ms） |
+
+### 上传工具库
+
+`lib/uploadToR2.js` 提供可复用的上传函数：
+
+```javascript
+import { uploadToR2 } from './lib/uploadToR2.js';
+
+await uploadToR2({
+  accessKeyId: 'xxx',
+  secretAccessKey: 'xxx',
+  endpoint: 'https://xxx.r2.cloudflarestorage.com',
+  bucket: 'my-bucket',
+  localFile: './file.txt',
+  remoteKey: 'path/to/file.txt',
+  contentType: 'text/plain',
+  publicUrl: 'https://cdn.example.com',  // 可选
+  onProgress: (loaded, total) => {},     // 可选，进度回调
+  silent: false,                          // 可选，静默模式
+});
+```
 
 ## 常见问题
 
