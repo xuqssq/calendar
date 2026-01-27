@@ -83,7 +83,7 @@ const fetchYearRange = async (startYear, endYear) => {
     console.log(`\n数据保存在: ${outputDir}`);
 };
 
-const args = [1999, 2050]
+const args = [1999, 2100]
 const startYear = parseInt(args[0]) || new Date().getFullYear();
 const endYear = parseInt(args[1]) || startYear;
 
