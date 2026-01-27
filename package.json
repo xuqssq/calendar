@@ -8,10 +8,14 @@
   "type": "module",
   "scripts": {
     "start": "node main.js",
-    "generate-ics": "node generateIcs.js"
+    "generate-ics": "node generateIcs.js",
+    "upload-cf": "node uploadToCF.js"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.975.0",
+    "@aws-sdk/lib-storage": "^3.975.0",
     "cheerio": "^1.2.0",
+    "dotenv": "^17.2.3",
     "undici": "^7.19.1"
   }
 }

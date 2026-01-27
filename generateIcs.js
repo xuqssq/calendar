@@ -16,10 +16,47 @@ const CONFIG = {
 };
 
 // ============ 工具函数 ============
-const generateUID = (date, type, index = 0) => `${date}-${type}-${index}@calendar`;
+const CATEGORY_ID_MAP = { '节日': 'festival', '调休': 'schedule' };
+const generateUID = (date, type, index = 0) => {
+  const asciiType = CATEGORY_ID_MAP[type] || type.replace(/[^\x00-\x7F]/g, '');
+  return `${date}-${asciiType}-${index}@calendar`;
+};
 const formatDate = (year, month, day) => `${year}${month}${day.padStart(2, '0')}`;
 const escapeICS = (text) => text?.replace(/[\\;,]/g, '\\$&').replace(/\n/g, '\\n') ?? '';
 const getTimestamp = () => new Date().toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+const getNextDay = (dateStr) => {
+  const year = parseInt(dateStr.slice(0, 4));
+  const month = parseInt(dateStr.slice(4, 6)) - 1;
+  const day = parseInt(dateStr.slice(6, 8));
+  const nextDate = new Date(year, month, day + 1);
+  return `${nextDate.getFullYear()}${String(nextDate.getMonth() + 1).padStart(2, '0')}${String(nextDate.getDate()).padStart(2, '0')}`;
+};
+
+// 按 RFC 5545 规范折叠长行（每行最多 75 字节）
+// 使用 Intl.Segmenter 正确处理 grapheme clusters（包括 emoji）
+function foldLine(line) {
+  const maxLen = 75;
+  if (Buffer.byteLength(line, 'utf8') <= maxLen) return line;
+
+  const segmenter = new Intl.Segmenter('zh', { granularity: 'grapheme' });
+  const segments = [...segmenter.segment(line)].map(s => s.segment);
+
+  const result = [];
+  let current = '';
+
+  for (const grapheme of segments) {
+    const test = current + grapheme;
+    if (Buffer.byteLength(test, 'utf8') > maxLen) {
+      result.push(current);
+      current = ' ' + grapheme; // 续行以空格开头
+    } else {
+      current = test;
+    }
+  }
+  if (current) result.push(current);
+
+  return result.join('\r\n');
+}
 
 // 生成单个事件
 function generateEvent(date, summary, description, category, index = 0) {
@@ -28,13 +65,13 @@ function generateEvent(date, summary, description, category, index = 0) {
     `UID:${generateUID(date, category, index)}`,
     `DTSTAMP:${getTimestamp()}`,
     `DTSTART;VALUE=DATE:${date}`,
-    `DTEND;VALUE=DATE:${date}`,
+    `DTEND;VALUE=DATE:${getNextDay(date)}`,
     `SUMMARY:${escapeICS(summary)}`,
     `DESCRIPTION:${escapeICS(description)}`,
     `CATEGORIES:${category}`,
     'TRANSP:TRANSPARENT',
     'END:VEVENT',
-  ].join('\n');
+  ].map(foldLine).join('\r\n');
 }
 
 // ============ 节日处理 ============
@@ -160,20 +197,45 @@ function buildDayTypeInfoMap(allDays, restGroups) {
   return dayTypeInfoMap;
 }
 
+// ============ 描述生成 ============
+function buildDescription(day) {
+  const parts = [`[农历] ${day.lunar}`, `[干支] ${day.ganzhi}`];
+  if (day.yi?.length) parts.push(`[宜] ${day.yi.join('、')}`);
+  if (day.ji?.length) parts.push(`[忌] ${day.ji.join('、')}`);
+  return parts.join('\n');
+}
+
 // ============ 事件生成 ============
+const FESTIVAL_ICONS = {
+  '元旦': '🎊', '春节': '🧧', '除夕': '🧨', '清明': '🌿', '劳动节': '👷',
+  '端午': '🐲', '中秋': '🥮', '国庆': '🇨🇳', '情人节': '💕', '妇女节': '👩',
+  '植树节': '🌲', '愚人节': '🃏', '青年节': '🌟', '儿童节': '🧒', '建党节': '🎖️',
+  '建军节': '🎗️', '教师节': '📚', '重阳': '🏔️', '腊八': '🥣', '小年': '🏠',
+  '元宵': '🏮', '七夕': '💑', '母亲节': '💐', '父亲节': '👔',
+};
+
+function getFestivalIcon(festival) {
+  for (const [key, icon] of Object.entries(FESTIVAL_ICONS)) {
+    if (festival.includes(key)) return icon;
+  }
+  return '🎈';
+}
+
 function generateFestivalEvents(day) {
   if (!day.festival) return [];
+  const description = buildDescription(day);
   return day.festival.split(/\s+/).filter(Boolean).map((festival, index) =>
-    generateEvent(day.dateStr, festival, `农历: ${day.lunar}\n干支: ${day.ganzhi}`, '节日', index)
+    generateEvent(day.dateStr, `${getFestivalIcon(festival)} ${festival}`, description, '节日', index)
   );
 }
 
 function generateDayTypeEvent(day, info) {
   if (!info) return null;
   const summary = info.type === '休'
-    ? `${info.festival}休息日 第${info.dayNumber}天`
-    : `${info.festival}补班 第${info.dayNumber}天`;
-  return generateEvent(day.dateStr, summary, `农历: ${day.lunar}`, '调休');
+    ? `🎉 ${info.festival}休息日 第${info.dayNumber}天`
+    : `💼 ${info.festival}补班 第${info.dayNumber}天`;
+  const description = buildDescription(day);
+  return generateEvent(day.dateStr, summary, description, '调休');
 }
 
 // ============ ICS 文件生成 ============
@@ -188,7 +250,7 @@ function generateICSContent(events) {
     `X-WR-TIMEZONE:${CONFIG.timezone}`,
     ...events,
     'END:VCALENDAR',
-  ].join('\n');
+  ].join('\r\n');
 }
 
 // ============ 主函数 ============
