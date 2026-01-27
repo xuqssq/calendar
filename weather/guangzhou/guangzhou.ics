@@ -1,0 +1,215 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Moli-X//Weather//CN
+X-WR-CALNAME:天气订阅
+X-APPLE-CALENDAR-COLOR:#ffffff
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+SUMMARY;LANGUAGE=en:☀️ 18°/25°
+X-FUNAMBOL-ALLDAY:1
+
+UID:20260127@vejnoe.dk
+DTSTAMP;VALUE=DATE:20260127T101631
+DTSTART;VALUE=DATE:20260127
+LOCATION:Guangzhou
+X-MICROSOFT-CDO-ALLDAYEVENT:TRUE
+DTEND;VALUE=DATE:20260128
+X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
+DESCRIPTION;LANGUAGE=en:☀️ 晴\n\n🌅 日出 7:08 日落 18:10\n\n⚡️ Pressure 1020 hPa\n\n💧 湿度 47%\n\n💨 Wind speed up to 4 m/s\n🚩 北 ↓\n\nView full weather report https://github.com/xuqssq\n\n🙌 更多日历订阅请点击 https://github.com/xuqssq
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY;LANGUAGE=en:☁️ 16°/23°
+X-FUNAMBOL-ALLDAY:1
+
+UID:20260128@vejnoe.dk
+DTSTAMP;VALUE=DATE:20260127T101631
+DTSTART;VALUE=DATE:20260128
+LOCATION:Guangzhou
+X-MICROSOFT-CDO-ALLDAYEVENT:TRUE
+DTEND;VALUE=DATE:20260129
+X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
+DESCRIPTION;LANGUAGE=en:☁️ 多云\n\n🌅 日出 7:08 日落 18:11\n\n⚡️ Pressure 1022 hPa\n\n💧 湿度 48%\n\n💨 Wind speed up to 4 m/s\n🚩 南偏东 ↖\n\nView full weather report https://github.com/xuqssq\n\n🙌 更多日历订阅请点击 https://github.com/xuqssq
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY;LANGUAGE=en:☁️ 18°/24°
+X-FUNAMBOL-ALLDAY:1
+
+UID:20260129@vejnoe.dk
+DTSTAMP;VALUE=DATE:20260127T101631
+DTSTART;VALUE=DATE:20260129
+LOCATION:Guangzhou
+X-MICROSOFT-CDO-ALLDAYEVENT:TRUE
+DTEND;VALUE=DATE:20260130
+X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
+DESCRIPTION;LANGUAGE=en:☁️ 部分多云\n\n🌅 日出 7:08 日落 18:11\n\n⚡️ Pressure 1022 hPa\n\n💧 湿度 52%\n\n💨 Wind speed up to 5 m/s\n🚩 南 ↑\n\nView full weather report https://github.com/xuqssq\n\n🙌 更多日历订阅请点击 https://github.com/xuqssq
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY;LANGUAGE=en:☁️ 19°/21°
+X-FUNAMBOL-ALLDAY:1
+
+UID:20260130@vejnoe.dk
+DTSTAMP;VALUE=DATE:20260127T101631
+DTSTART;VALUE=DATE:20260130
+LOCATION:Guangzhou
+X-MICROSOFT-CDO-ALLDAYEVENT:TRUE
+DTEND;VALUE=DATE:20260131
+X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
+DESCRIPTION;LANGUAGE=en:☁️ 多云\n\n🌅 日出 7:07 日落 18:12\n\n⚡️ Pressure 1023 hPa\n\n💧 湿度 60%\n\n💨 Wind speed up to 3 m/s\n🚩 东南 ↖\n\nView full weather report https://github.com/xuqssq\n\n🙌 更多日历订阅请点击 https://github.com/xuqssq
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY;LANGUAGE=en:☁️ 16°/23°
+X-FUNAMBOL-ALLDAY:1
+
+UID:20260131@vejnoe.dk
+DTSTAMP;VALUE=DATE:20260127T101631
+DTSTART;VALUE=DATE:20260131
+LOCATION:Guangzhou
+X-MICROSOFT-CDO-ALLDAYEVENT:TRUE
+DTEND;VALUE=DATE:20260201
+X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
+DESCRIPTION;LANGUAGE=en:☁️ 多云\n\n🌅 日出 7:07 日落 18:13\n\n⚡️ Pressure 1024 hPa\n\n💧 湿度 64%\n\n💨 Wind speed up to 5 m/s\n🚩 北 ↓\n\nView full weather report https://github.com/xuqssq\n\n🙌 更多日历订阅请点击 https://github.com/xuqssq
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY;LANGUAGE=en:☁️ 15°/23°
+X-FUNAMBOL-ALLDAY:1
+
+UID:20260201@vejnoe.dk
+DTSTAMP;VALUE=DATE:20260127T101631
+DTSTART;VALUE=DATE:20260201
+LOCATION:Guangzhou
+X-MICROSOFT-CDO-ALLDAYEVENT:TRUE
+DTEND;VALUE=DATE:20260202
+X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
+DESCRIPTION;LANGUAGE=en:☁️ 部分多云\n\n🌅 日出 7:07 日落 18:13\n\n⚡️ Pressure 1025 hPa\n\n💧 湿度 48%\n\n💨 Wind speed up to 5 m/s\n🚩 北 ↓\n\nView full weather report https://github.com/xuqssq\n\n🙌 更多日历订阅请点击 https://github.com/xuqssq
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY;LANGUAGE=en:☁️ 17°/22°
+X-FUNAMBOL-ALLDAY:1
+
+UID:20260202@vejnoe.dk
+DTSTAMP;VALUE=DATE:20260127T101631
+DTSTART;VALUE=DATE:20260202
+LOCATION:Guangzhou
+X-MICROSOFT-CDO-ALLDAYEVENT:TRUE
+DTEND;VALUE=DATE:20260203
+X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
+DESCRIPTION;LANGUAGE=en:☁️ 多云\n\n🌅 日出 7:06 日落 18:14\n\n⚡️ Pressure 1026 hPa\n\n💧 湿度 46%\n\n💨 Wind speed up to 4 m/s\n🚩 北偏东 ↓\n\nView full weather report https://github.com/xuqssq\n\n🙌 更多日历订阅请点击 https://github.com/xuqssq
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY;LANGUAGE=en:☁️ 18°/24°
+X-FUNAMBOL-ALLDAY:1
+
+UID:20260203@vejnoe.dk
+DTSTAMP;VALUE=DATE:20260127T101631
+DTSTART;VALUE=DATE:20260203
+LOCATION:Guangzhou
+X-MICROSOFT-CDO-ALLDAYEVENT:TRUE
+DTEND;VALUE=DATE:20260204
+X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
+DESCRIPTION;LANGUAGE=en:☁️ 局部多云\n\n🌅 日出 7:06 日落 18:15\n\n⚡️ Pressure 1024 hPa\n\n💧 湿度 55%\n\n💨 Wind speed up to 5 m/s\n🚩 南 ↑\n\nView full weather report https://github.com/xuqssq\n\n🙌 更多日历订阅请点击 https://github.com/xuqssq
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY;LANGUAGE=en:☁️ 19°/25°
+X-FUNAMBOL-ALLDAY:1
+
+UID:20260204@vejnoe.dk
+DTSTAMP;VALUE=DATE:20260127T101631
+DTSTART;VALUE=DATE:20260204
+LOCATION:Guangzhou
+X-MICROSOFT-CDO-ALLDAYEVENT:TRUE
+DTEND;VALUE=DATE:20260205
+X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
+DESCRIPTION;LANGUAGE=en:☁️ 多云\n\n🌅 日出 7:05 日落 18:15\n\n⚡️ Pressure 1020 hPa\n\n💧 湿度 62%\n\n💨 Wind speed up to 3 m/s\n🚩 南 ↑\n\nView full weather report https://github.com/xuqssq\n\n🙌 更多日历订阅请点击 https://github.com/xuqssq
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY;LANGUAGE=en:☀️ 20°/28°
+X-FUNAMBOL-ALLDAY:1
+
+UID:20260205@vejnoe.dk
+DTSTAMP;VALUE=DATE:20260127T101631
+DTSTART;VALUE=DATE:20260205
+LOCATION:Guangzhou
+X-MICROSOFT-CDO-ALLDAYEVENT:TRUE
+DTEND;VALUE=DATE:20260206
+X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
+DESCRIPTION;LANGUAGE=en:☀️ 晴\n\n🌅 日出 7:05 日落 18:16\n\n⚡️ Pressure 1016 hPa\n\n💧 湿度 58%\n\n💨 Wind speed up to 5 m/s\n🚩 南偏东 ↑\n\nView full weather report https://github.com/xuqssq\n\n🙌 更多日历订阅请点击 https://github.com/xuqssq
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY;LANGUAGE=en:☁️ 21°/28°
+X-FUNAMBOL-ALLDAY:1
+
+UID:20260206@vejnoe.dk
+DTSTAMP;VALUE=DATE:20260127T101631
+DTSTART;VALUE=DATE:20260206
+LOCATION:Guangzhou
+X-MICROSOFT-CDO-ALLDAYEVENT:TRUE
+DTEND;VALUE=DATE:20260207
+X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
+DESCRIPTION;LANGUAGE=en:☁️ 部分多云\n\n🌅 日出 7:04 日落 18:17\n\n⚡️ Pressure 1014 hPa\n\n💧 湿度 63%\n\n💨 Wind speed up to 5 m/s\n🚩 南偏东 ↖\n\nView full weather report https://github.com/xuqssq\n\n🙌 更多日历订阅请点击 https://github.com/xuqssq
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY;LANGUAGE=en:🌦️ 13°/26°
+X-FUNAMBOL-ALLDAY:1
+
+UID:20260207@vejnoe.dk
+DTSTAMP;VALUE=DATE:20260127T101631
+DTSTART;VALUE=DATE:20260207
+LOCATION:Guangzhou
+X-MICROSOFT-CDO-ALLDAYEVENT:TRUE
+DTEND;VALUE=DATE:20260208
+X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
+DESCRIPTION;LANGUAGE=en:🌦️ 小雨\n\n🌅 日出 7:04 日落 18:17\n\n⚡️ Pressure 1017 hPa\n\n💧 湿度 66%\n\n💨 Wind speed up to 8 m/s\n🚩 北 ↓\n\nView full weather report https://github.com/xuqssq\n\n🙌 更多日历订阅请点击 https://github.com/xuqssq
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY;LANGUAGE=en:🌦️ 10°/18°
+X-FUNAMBOL-ALLDAY:1
+
+UID:20260208@vejnoe.dk
+DTSTAMP;VALUE=DATE:20260127T101631
+DTSTART;VALUE=DATE:20260208
+LOCATION:Guangzhou
+X-MICROSOFT-CDO-ALLDAYEVENT:TRUE
+DTEND;VALUE=DATE:20260209
+X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
+DESCRIPTION;LANGUAGE=en:🌦️ 小雨\n\n🌅 日出 7:03 日落 18:18\n\n⚡️ Pressure 1025 hPa\n\n💧 湿度 51%\n\n💨 Wind speed up to 7 m/s\n🚩 北偏东 ↓\n\nView full weather report https://github.com/xuqssq\n\n🙌 更多日历订阅请点击 https://github.com/xuqssq
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY;LANGUAGE=en:☁️ 13°/17°
+X-FUNAMBOL-ALLDAY:1
+
+UID:20260209@vejnoe.dk
+DTSTAMP;VALUE=DATE:20260127T101631
+DTSTART;VALUE=DATE:20260209
+LOCATION:Guangzhou
+X-MICROSOFT-CDO-ALLDAYEVENT:TRUE
+DTEND;VALUE=DATE:20260210
+X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
+DESCRIPTION;LANGUAGE=en:☁️ 多云\n\n🌅 日出 7:03 日落 18:19\n\n⚡️ Pressure 1022 hPa\n\n💧 湿度 46%\n\n💨 Wind speed up to 3 m/s\n🚩 东北 ↙\n\nView full weather report https://github.com/xuqssq\n\n🙌 更多日历订阅请点击 https://github.com/xuqssq
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY;LANGUAGE=en:🌦️ 15°/18°
+X-FUNAMBOL-ALLDAY:1
+
+UID:20260210@vejnoe.dk
+DTSTAMP;VALUE=DATE:20260127T101631
+DTSTART;VALUE=DATE:20260210
+LOCATION:Guangzhou
+X-MICROSOFT-CDO-ALLDAYEVENT:TRUE
+DTEND;VALUE=DATE:20260211
+X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
+DESCRIPTION;LANGUAGE=en:🌦️ 小雨\n\n🌅 日出 7:02 日落 18:19\n\n⚡️ Pressure 1019 hPa\n\n💧 湿度 66%\n\n💨 Wind speed up to 3 m/s\n🚩 东偏东北 ←\n\nView full weather report https://github.com/xuqssq\n\n🙌 更多日历订阅请点击 https://github.com/xuqssq
+END:VEVENT
+BEGIN:VEVENT
+SUMMARY;LANGUAGE=en:☁️ 16°/21°
+X-FUNAMBOL-ALLDAY:1
+
+UID:20260211@vejnoe.dk
+DTSTAMP;VALUE=DATE:20260127T101631
+DTSTART;VALUE=DATE:20260211
+LOCATION:Guangzhou
+X-MICROSOFT-CDO-ALLDAYEVENT:TRUE
+DTEND;VALUE=DATE:20260212
+X-APPLE-TRAVEL-ADVISORY-BEHAVIOR:AUTOMATIC
+DESCRIPTION;LANGUAGE=en:☁️ 多云\n\n🌅 日出 7:02 日落 18:20\n\n⚡️ Pressure 1017 hPa\n\n💧 湿度 68%\n\n💨 Wind speed up to 3 m/s\n🚩 南 ↑\n\nView full weather report https://github.com/xuqssq\n\n🙌 更多日历订阅请点击 https://github.com/xuqssq
+END:VEVENT
+END:VCALENDAR
