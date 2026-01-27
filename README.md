@@ -72,7 +72,7 @@ yarn generate-ics
 cp .env.example .env
 
 # 编辑 .env 填入 R2 配置
-yarn upload
+yarn upload-cf
 ```
 
 ## 订阅日历
