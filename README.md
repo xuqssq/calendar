@@ -24,6 +24,7 @@
 - **增量更新** - 智能跳过已存在数据，避免重复采集
 - **标准格式** - 导出 RFC 5545 标准 ICS 格式，兼容主流日历应用
 - **云端上传** - 支持上传至 Cloudflare R2，实现日历订阅
+- **天气订阅** - 支持获取中国城市天气 ICS 日历，自动翻译为中文
 
 ## 快速开始
 
@@ -48,7 +49,7 @@ npm install
 yarn start
 ```
 
-> 默认采集 1999-2050 年的数据，可在 `main.js` 中修改年份范围。
+> 默认采集当前年份前后 10 年的数据（如 2026 年则采集 2016-2036 年），可在 `main.js` 中修改年份范围。
 > 数据保存在 `output/` 目录，按月份存储为 JSON 文件（如 `2026-01.json`）。
 
 ### 生成 ICS 文件
@@ -74,6 +75,17 @@ cp .env.example .env
 # 编辑 .env 填入 R2 配置
 yarn upload-cf
 ```
+
+### 获取天气日历
+
+获取中国城市天气数据并生成 ICS 日历文件：
+
+```bash
+yarn weather
+```
+
+> 天气数据来源于 weather-in-calendar.com，自动翻译为中文。
+> 数据保存在 `weather/` 目录，按城市名分目录存储。
 
 ## 订阅日历
 
@@ -136,13 +148,21 @@ https://cdn.xuqssq.com/calendar.ics
 calendar/
 ├── main.js              # 数据采集主程序
 ├── generateIcs.js       # ICS 日历生成脚本
+├── weather.js           # 天气日历获取脚本
 ├── uploadToCF.js        # 上传至 Cloudflare R2
 ├── package.json         # 项目配置
 ├── .env.example         # 环境变量模板
 ├── lib/
+│   ├── api.js           # API 请求封装
+│   ├── parser.js        # HTML 解析器
+│   ├── utils.js         # 工具函数
 │   └── uploadToR2.js    # R2 上传工具库
 ├── output/              # JSON 数据输出目录
 │   ├── 2026-01.json
+│   └── ...
+├── weather/             # 天气 ICS 输出目录
+│   ├── beijing/
+│   │   └── beijing.ics
 │   └── ...
 └── calendar.ics         # 生成的 ICS 日历文件
 ```
@@ -178,6 +198,43 @@ const CONFIG = {
 | `concurrency` | 10 | 同时发起的请求数量，建议不超过 20 |
 | `retries` | 3 | 请求失败后的重试次数 |
 | `retryDelay` | 1000 | 每次重试之间的等待时间（ms） |
+
+### 天气获取配置
+
+在 `weather.js` 中可调整以下配置：
+
+```javascript
+const CONFIG = {
+  baseUrl: 'https://weather-in-calendar.com/cal/weather-cal.php',
+  outputDir: path.join(__dirname, 'weather'),
+  concurrency: 5,    // 并发请求数
+  retries: 3,        // 失败重试次数
+  retryDelay: 2000,  // 重试间隔（毫秒）
+};
+```
+
+**支持的城市：**
+
+脚本内置 80+ 个中国主要城市，包括：
+
+- 直辖市：北京、上海、天津、重庆
+- 省会城市：广州、杭州、南京、武汉、成都等
+- 其他城市：苏州、深圳、青岛、大连等
+
+如需添加城市，修改 `CITIES` 数组即可。对于同名城市（如苏州），可在 `SPECIAL_CITIES` 中指定省份：
+
+```javascript
+const SPECIAL_CITIES = [
+  { name: 'suzhoujs', query: 'suzhou,js,cn' },  // 江苏苏州
+];
+```
+
+**天气翻译：**
+
+脚本自动将英文天气描述翻译为中文：
+
+- 天气状况：Overcast clouds → 多云，Light rain → 小雨
+- 风向：from N → 北，from SE → 东南
 
 ### 上传工具库
 
