@@ -17,6 +17,7 @@
     "@aws-sdk/lib-storage": "^3.975.0",
     "cheerio": "^1.2.0",
     "dotenv": "^17.2.3",
+    "socks-proxy-agent": "^8.0.5",
     "undici": "^7.19.1"
   }
 }
