@@ -1,61 +1,60 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { proxyFetch } from './lib/proxy.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 // 城市列表
-// const CITIES = [
-//   // A
-//   'anshun', 'anzhou', 'anqing', 'anshan',
-//   // B
-//   'beijing', 'baoding', 'baotou', 'bengbu', 'bozhou',
-//   // C
-//   'chongqing', 'changchun', 'changsha', 'chengdu', 'chuzhou', 'changzhou',
-//   // D
-//   'dalian', 'dongguan', 'dandong', 'dezhou', 'dongying', 'deyang',
-//   // F
-//   'fuzhou', 'foshan', 'fuyang', 'fujian', 'fushun',
-//   // G
-//   'guangzhou', 'guilin', 'guiyang', 'ganzhou',
-//   // H
-//   'hangzhou', 'hefei', 'hebei', 'hainan', 'hunan', 'huzhou',
-//   // J
-//   'jinan', 'jiujiang', 'jiangxi', 'jiangsu', 'jilin', 'jining',
-//   // K
-//   'kunming', 'kaiyuan', 'kaili', 'kaifeng',
-//   // L
-//   'lianyungang', 'lijiang', 'longyan', 'liangping', 'luzhou', 'leshan', 'longquan',
-//   // M
-//   'meizhou', 'mianyang', 'macau',
-//   // N
-//   'nanjing', 'nanchang', 'nanning', 'nanyang', 'ningbo', 'nantong',
-//   // P
-//   'pingdingshan', 'pingxiang', 'putian', 'pingyang',
-//   // Q
-//   'qingdao', 'qinghai', 'qiqihar', 'qinzhou', 'qinhuangdao',
-//   // S
-//   'shenzhen', 'shanghai', 'suzhou', 'shijiazhuang', 'shaoxing', 'shantou',
-//   // T
-//   'tianjin', 'taiyuan', 'taizhou', 'tonghua', 'taian', 'tianmen',
-//   // W
-//   'wuhan', 'wenzhou', 'weifang', 'wulumuqi', 'wuxi', 'wuhu', 'weihai',
-//   // X
-//   "xi'an", 'xiamen', 'xingtai', 'xiangyang', 'xuzhou', 'xuchang',
-//   // Y
-//   'yantai', 'yichang', 'yuxi', 'yibin', 'yuncheng', 'yinchuan', 'yancheng',
-//   // Z
-//   'zhuhai', 'zhengzhou', 'zunyi', 'zhongshan', 'zibo', 'zhoukou', 'zhangjiajie',
-//   'zhangzhou', 'zhenjiang', 'zhumadian', 'zhongwei', 'zigong', 'zhanjiang',
-//   'zhangye', 'zhangjiakou', 'zhoushan', 'zhuji', 'zhanghe', 'zhaoqing',
-// ];
+const CITIES = [
+  // A
+  'anshun', 'anzhou', 'anqing', 'anshan',
+  // B
+  'beijing', 'baoding', 'baotou', 'bengbu', 'bozhou',
+  // C
+  'chongqing', 'changchun', 'changsha', 'chengdu', 'chuzhou', 'changzhou',
+  // D
+  'dalian', 'dongguan', 'dandong', 'dezhou', 'dongying', 'deyang',
+  // F
+  'fuzhou', 'foshan', 'fuyang', 'fujian', 'fushun',
+  // G
+  'guangzhou', 'guilin', 'guiyang', 'ganzhou',
+  // H
+  'hangzhou', 'hefei', 'hebei', 'hainan', 'hunan', 'huzhou',
+  // J
+  'jinan', 'jiujiang', 'jiangxi', 'jiangsu', 'jilin', 'jining',
+  // K
+  'kunming', 'kaiyuan', 'kaili', 'kaifeng',
+  // L
+  'lianyungang', 'lijiang', 'longyan', 'liangping', 'luzhou', 'leshan', 'longquan',
+  // M
+  'meizhou', 'mianyang', 'macau',
+  // N
+  'nanjing', 'nanchang', 'nanning', 'nanyang', 'ningbo', 'nantong',
+  // P
+  'pingdingshan', 'pingxiang', 'putian', 'pingyang',
+  // Q
+  'qingdao', 'qinghai', 'qiqihar', 'qinzhou', 'qinhuangdao',
+  // S
+  'shenzhen', 'shanghai', 'suzhou', 'shijiazhuang', 'shaoxing', 'shantou',
+  // T
+  'tianjin', 'taiyuan', 'taizhou', 'tonghua', 'taian', 'tianmen',
+  // W
+  'wuhan', 'wenzhou', 'weifang', 'wulumuqi', 'wuxi', 'wuhu', 'weihai',
+  // X
+  "xi'an", 'xiamen', 'xingtai', 'xiangyang', 'xuzhou', 'xuchang',
+  // Y
+  'yantai', 'yichang', 'yuxi', 'yibin', 'yuncheng', 'yinchuan', 'yancheng',
+  // Z
+  'zhuhai', 'zhengzhou', 'zunyi', 'zhongshan', 'zibo', 'zhoukou', 'zhangjiajie',
+  'zhangzhou', 'zhenjiang', 'zhumadian', 'zhongwei', 'zigong', 'zhanjiang',
+  'zhangye', 'zhangjiakou', 'zhoushan', 'zhuji', 'zhanghe', 'zhaoqing',
+];
 
-
-const CITIES = ['guangzhou']
 
 // 特殊城市（需要指定省份）
 const SPECIAL_CITIES = [
-  // { name: 'suzhoujs', query: 'suzhou,js,cn' },
+  { name: 'suzhoujs', query: 'suzhou,js,cn' },
 ];
 
 // 配置
@@ -116,7 +115,7 @@ const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 const fetchWithRetry = async (url, retries = CONFIG.retries) => {
   for (let i = 0; i < retries; i++) {
     try {
-      const response = await fetch(url);
+      const response = await proxyFetch(url);
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}`);
       }
