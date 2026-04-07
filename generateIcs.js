@@ -15,6 +15,25 @@ const CONFIG = {
   holidayNameMap: { '除夕': '春节' },
 };
 
+const SOLAR_TERMS = new Set([
+  '立春', '雨水', '惊蛰', '春分', '清明', '谷雨',
+  '立夏', '小满', '芒种', '夏至', '小暑', '大暑',
+  '立秋', '处暑', '白露', '秋分', '寒露', '霜降',
+  '立冬', '小雪', '大雪', '冬至', '小寒', '大寒',
+]);
+
+const ALLOWED_FESTIVALS = new Set([
+  // 中国常见公历节日
+  '元旦', '妇女节', '植树节', '劳动节', '青年节', '儿童节',
+  '建党节', '建军节', '教师节', '国庆节', '国庆',
+  // 中国常见农历节日
+  '除夕', '春节', '元宵节', '元宵', '龙抬头', '端午节', '端午',
+  '七夕节', '七夕', '中元节', '中秋节', '中秋', '重阳节', '重阳',
+  '寒衣节', '下元节', '腊八节', '腊八', '小年',
+  // 常见西方节日
+  '情人节', '母亲节', '父亲节', '万圣节', '感恩节', '平安夜', '圣诞节',
+]);
+
 // ============ 工具函数 ============
 const CATEGORY_ID_MAP = { '节日': 'festival', '调休': 'schedule' };
 const generateUID = (date, type, index = 0) => {
@@ -77,9 +96,10 @@ function generateEvent(date, summary, description, category, index = 0) {
 // ============ 节日处理 ============
 function extractMajorFestival(festivalStr) {
   if (!festivalStr) return null;
-  const matched = CONFIG.majorHolidays.find(h => festivalStr.includes(h));
+  const displayFestivals = getDisplayFestivals(festivalStr);
+  const matched = CONFIG.majorHolidays.find(h => displayFestivals.includes(h));
   if (matched) return CONFIG.holidayNameMap[matched] || matched;
-  return festivalStr.match(/^([^\s（(]+)/)?.[1] ?? null;
+  return displayFestivals[0] ?? null;
 }
 
 // ============ 休息日组识别 ============
@@ -211,7 +231,9 @@ const FESTIVAL_ICONS = {
   '端午': '🐲', '中秋': '🥮', '国庆': '🇨🇳', '情人节': '💕', '妇女节': '👩',
   '植树节': '🌲', '愚人节': '🃏', '青年节': '🌟', '儿童节': '🧒', '建党节': '🎖️',
   '建军节': '🎗️', '教师节': '📚', '重阳': '🏔️', '腊八': '🥣', '小年': '🏠',
-  '元宵': '🏮', '七夕': '💑', '母亲节': '💐', '父亲节': '👔',
+  '元宵': '🏮', '七夕': '💑', '母亲节': '💐', '父亲节': '👔', '龙抬头': '🐉',
+  '中元节': '🪔', '寒衣节': '🧥', '下元节': '🌕', '万圣节': '🎃', '感恩节': '🦃',
+  '平安夜': '🔔', '圣诞节': '🎄',
 };
 
 function getFestivalIcon(festival) {
@@ -221,10 +243,53 @@ function getFestivalIcon(festival) {
   return '🎈';
 }
 
+function normalizeFestivalName(festival) {
+  const name = festival.trim();
+  if (!name) return null;
+
+  const solarTerm = name.match(/^([^（(]+)[（(]/)?.[1]?.trim() ?? name;
+  if (SOLAR_TERMS.has(solarTerm)) return solarTerm;
+
+  const normalizedMap = {
+    '国庆节': '国庆',
+    '元宵节': '元宵',
+    '端午节': '端午',
+    '中秋节': '中秋',
+    '重阳节': '重阳',
+    '腊八节': '腊八',
+    '七夕节': '七夕',
+  };
+
+  return normalizedMap[name] || name;
+}
+
+function shouldIncludeFestival(festival) {
+  if (!festival) return false;
+  if (SOLAR_TERMS.has(festival)) return true;
+  return ALLOWED_FESTIVALS.has(festival);
+}
+
+function getDisplayFestivals(festivalStr) {
+  if (!festivalStr) return [];
+
+  const festivals = [];
+  const seen = new Set();
+
+  for (const rawFestival of festivalStr.split(/\s+/).filter(Boolean)) {
+    const normalizedFestival = normalizeFestivalName(rawFestival);
+    if (!shouldIncludeFestival(normalizedFestival) || seen.has(normalizedFestival)) continue;
+    seen.add(normalizedFestival);
+    festivals.push(normalizedFestival);
+  }
+
+  return festivals;
+}
+
 function generateFestivalEvents(day) {
-  if (!day.festival) return [];
+  const festivals = getDisplayFestivals(day.festival);
+  if (!festivals.length) return [];
   const description = buildDescription(day);
-  return day.festival.split(/\s+/).filter(Boolean).map((festival, index) =>
+  return festivals.map((festival, index) =>
     generateEvent(day.dateStr, `${getFestivalIcon(festival)} ${festival}`, description, '节日', index)
   );
 }
